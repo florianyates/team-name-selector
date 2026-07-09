@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team Agency — Name Selector</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --brown: #2C1810;
+    --orange: #E8651A;
+    --red: #CC2200;
+    --white: #ffffff;
+    --brown-light: #4a2c1e;
+    --orange-light: #f07830;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f0ed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .app {
+    display: flex;
+    gap: 0;
+    min-height: 560px;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(44,24,16,0.18);
+  }
+  .sidebar {
+    width: 230px;
+    min-width: 230px;
+    background: var(--brown);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .sidebar-title {
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+  .sidebar textarea {
+    flex: 1;
+    background: var(--brown-light);
+    border: 1px solid #5a3828;
+    color: var(--white);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 13px;
+    resize: none;
+    min-height: 280px;
+    line-height: 1.6;
+    font-family: inherit;
+  }
+  .sidebar textarea::placeholder { color: #8a6050; }
+  .sidebar textarea:focus { outline: none; border-color: var(--orange); }
+  .name-count {
+    background: var(--brown-light);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #c09080;
+    font-size: 12px;
+  }
+  .main {
+    flex: 1;
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .header {
+    background: var(--orange);
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-title { color: var(--white); font-size: 17px; font-weight: 600; }
+  .header-sub { color: rgba(255,255,255,0.75); font-size: 12px; margin-top: 2px; }
+  .logo-stripe {
+    width: 36px; height: 36px; border-radius: 7px;
+    background: var(--brown); flex-shrink: 0;
+    position: relative; overflow: hidden;
+  }
+  .logo-stripe::after {
+    content: '';
+    position: absolute; top: -4px; left: 50%;
+    width: 3px; height: 150%;
+    background: var(--red);
+    transform: rotate(-40deg) translateX(-50%);
+  }
+  .controls {
+    padding: 14px 22px;
+    border-bottom: 1px solid #f0e8e0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fdf8f5;
+    flex-wrap: wrap;
+  }
+  .controls label { font-size: 13px; color: var(--brown); font-weight: 500; white-space: nowrap; }
+  .controls input[type=number] {
+    width: 72px;
+    border: 1.5px solid #d4b89a;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 14px;
+    color: var(--brown);
+    background: var(--white);
+    text-align: center;
+    font-family: inherit;
+  }
+  .controls input[type=number]:focus { outline: none; border-color: var(--orange); }
+  .btn-draw {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 9px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 0 #a84a0e;
+    font-family: inherit;
+  }
+  .btn-draw:hover { background: var(--orange-light); }
+  .btn-draw:active { transform: translateY(1px); box-shadow: none; }
+  .btn-draw:disabled { background: #c0a090; box-shadow: none; cursor: not-allowed; }
+  .btn-reset {
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: auto;
+    box-shadow: 0 2px 0 #881500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+  }
+  .btn-reset:hover { background: #e02600; }
+  .btn-reset:active { transform: translateY(1px); box-shadow: none; }
+
+  .stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    min-height: 340px;
+  }
+  .idle-msg { color: #c0a090; font-size: 14px; text-align: center; line-height: 1.8; }
+  .names-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%; }
+  .name-card {
+    background: var(--brown); color: var(--white);
+    border-radius: 8px; padding: 12px 22px;
+    font-size: 15px; font-weight: 500;
+    opacity: 0; transform: scale(0.3) rotate(-8deg);
+    position: relative; overflow: hidden;
+  }
+  .name-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--orange); }
+  .name-card.accent { background: var(--red); }
+  .name-card.accent::before { background: #ff6640; }
+  .name-card.pop { animation: cardPop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes cardPop {
+    0% { opacity: 0; transform: scale(0.3) rotate(-8deg); }
+    60% { opacity: 1; transform: scale(1.1) rotate(1deg); }
+    80% { transform: scale(0.96) rotate(-0.5deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+
+  .drawn-section { padding: 10px 22px; border-top: 1px solid #f0e8e0; background: #fdf8f5; font-size: 12px; display: none; }
+  .drawn-section.visible { display: block; }
+  .drawn-label { font-weight: 500; color: var(--brown); margin-bottom: 6px; font-size: 12px; }
+  .drawn-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .drawn-pill { background: #ede0d6; color: var(--brown); border-radius: 20px; padding: 3px 10px; font-size: 11px; }
+
+  .reveal-overlay {
+    position: absolute; inset: 0; background: var(--brown);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; z-index: 10; transition: opacity 0.3s;
+  }
+  .reveal-overlay.hidden { opacity: 0; pointer-events: none; }
+  .reveal-eyebrow { color: var(--orange); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+  .reveal-headline { color: var(--white); font-size: 26px; font-weight: 600; text-align: center; line-height: 1.25; padding: 0 20px; }
+  .reveal-sub { color: rgba(255,255,255,0.5); font-size: 13px; }
+  .reveal-btn {
+    margin-top: 16px; background: var(--orange); color: var(--white); border: none;
+    border-radius: 8px; padding: 14px 40px; font-size: 18px; font-weight: 600;
+    cursor: pointer; letter-spacing: 0.5px; font-family: inherit;
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(232,101,26,0.5); }
+    50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(232,101,26,0); }
+  }
+  .reveal-btn:hover { background: var(--orange-light); animation: none; transform: scale(1.04); }
+
+  .drumroll-bar { width: 280px; height: 6px; background: rgba(255,255,255,0.12); border-radius: 3px; overflow: hidden; display: none; }
+  .drumroll-fill { height: 100%; width: 0%; background: var(--orange); border-radius: 3px; }
+  .drumroll-name { font-size: 30px; font-weight: 600; color: var(--white); min-height: 44px; text-align: center; opacity: 0; letter-spacing: 0.5px; }
+
+  #confettiCanvas { position: absolute; inset: 0; pointer-events: none; z-index: 20; width: 100%; height: 100%; }
+  .spotlight { position: absolute; inset: 0; pointer-events: none; z-index: 5; background: radial-gradient(ellipse 200px 300px at 50% -20%, rgba(232,101,26,0.18) 0%, transparent 70%); opacity: 0; transition: opacity 0.5s; }
+  .spotlight.on { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="sidebar-title">Name pool</div>
+    <textarea id="nameInput" placeholder="Paste names here, one per line...&#10;&#10;Jane Smith&#10;John Doe&#10;Alex Johnson&#10;..."></textarea>
+    <div class="name-count" id="nameCount">0 names in pool</div>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <div class="logo-stripe"></div>
+      <div>
+        <div class="header-title">Team Agency — Name Selector</div>
+        <div class="header-sub">Random draw with persistent exclusions</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <label for="countInput">Draw</label>
+      <input type="number" id="countInput" value="1" min="1" max="999">
+      <label for="countInput" style="margin-left:-8px">names</label>
+      <button class="btn-draw" onclick="startDraw()">Draw now</button>
+      <button class="btn-reset" onclick="resetAll()"><i class="ti ti-refresh"></i> Reset pool</button>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="spotlight" id="spotlight"></div>
+      <canvas id="confettiCanvas"></canvas>
+      <div class="idle-msg" id="idleMsg">Paste names into the panel on the left,<br>set how many to draw, then hit <strong>Draw now</strong>.</div>
+      <div class="names-grid" id="namesGrid" style="display:none"></div>
+
+      <div class="reveal-overlay hidden" id="revealOverlay">
+        <div class="reveal-eyebrow">Team Agency</div>
+        <div class="reveal-headline" id="revealHeadline">Ready to draw...</div>
+        <div class="reveal-sub" id="revealSub"></div>
+        <div class="drumroll-name" id="drumrollName"></div>
+        <div class="drumroll-bar" id="drumrollBar"><div class="drumroll-fill" id="drumrollFill"></div></div>
+        <button class="reveal-btn" id="revealBtn" onclick="beginReveal()">🎲 Draw!</button>
+      </div>
+    </div>
+
+    <div class="drawn-section" id="drawnSection">
+      <div class="drawn-label">Previously drawn (excluded from pool)</div>
+      <div class="drawn-pills" id="drawnPills"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let excluded = [], pendingNames = [];
+  const nameInput = document.getElementById('nameInput');
+  const nameCount = document.getElementById('nameCount');
+  const countInput = document.getElementById('countInput');
+  const stage = document.getElementById('stage');
+  const idleMsg = document.getElementById('idleMsg');
+  const namesGrid = document.getElementById('namesGrid');
+  const revealOverlay = document.getElementById('revealOverlay');
+  const revealHeadline = document.getElementById('revealHeadline');
+  const revealSub = document.getElementById('revealSub');
+  const revealBtn = document.getElementById('revealBtn');
+  const drumrollName = document.getElementById('drumrollName');
+  const drumrollBar = document.getElementById('drumrollBar');
+  const drumrollFill = document.getElementById('drumrollFill');
+  const spotlight = document.getElementById('spotlight');
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+
+  nameInput.addEventListener('input', updateCount);
+  function getNames() { return nameInput.value.split('\n').map(n=>n.trim()).filter(n=>n.length>0); }
+  function getPool() { return getNames().filter(n=>!excluded.includes(n)); }
+  function updateCount() {
+    const pool = getPool();
+    nameCount.textContent = pool.length + ' available' + (excluded.length ? ` (${excluded.length} drawn)` : '');
+  }
+
+  function startDraw() {
+    const pool = getPool();
+    const want = parseInt(countInput.value) || 1;
+    if (pool.length === 0) { alert('No names in the pool. Paste names on the left first.'); return; }
+    const count = Math.min(want, pool.length);
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    pendingNames = shuffled.slice(0, count);
+    revealHeadline.textContent = count === 1 ? 'One name is about to be drawn...' : `${count} names are about to be drawn...`;
+    revealSub.textContent = "When you're ready, hit the button";
+    revealBtn.textContent = count === 1 ? '🎲 Reveal the name!' : `🎲 Reveal all ${count} names!`;
+    revealBtn.style.display = '';
+    drumrollName.style.opacity = '0';
+    drumrollBar.style.display = 'none';
+    revealOverlay.classList.remove('hidden');
+    idleMsg.style.display = 'none';
+    namesGrid.style.display = 'none';
+    namesGrid.innerHTML = '';
+    spotlight.classList.add('on');
+  }
+
+  function beginReveal() {
+    revealBtn.style.display = 'none';
+    revealSub.textContent = '';
+    revealHeadline.textContent = pendingNames.length === 1 ? 'And the winner is...' : 'Drawing names...';
+    drumrollBar.style.display = 'block';
+    drumrollName.style.opacity = '1';
+    const allNames = getPool().concat(pendingNames);
+    const duration = Math.min(2800, 1200 + pendingNames.length * 300);
+    let start = null, tickInterval = 60;
+    function tick(ts) {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      drumrollFill.style.width = (progress * 100) + '%';
+      const eased = progress < 0.5 ? 2*progress*progress : -1+(4-2*progress)*progress;
+      tickInterval = 60 + eased * 260;
+      drumrollName.textContent = allNames[Math.floor(Math.random() * allNames.length)];
+      if (progress < 1) { setTimeout(() => requestAnimationFrame(tick), tickInterval); }
+      else {
+        drumrollName.textContent = '';
+        drumrollBar.style.display = 'none';
+        revealHeadline.textContent = '';
+        revealOverlay.classList.add('hidden');
+        showCards();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function showCards() {
+    namesGrid.style.display = 'flex';
+    spotlight.classList.remove('on');
+    pendingNames.forEach((name, i) => {
+      excluded.push(name);
+      const card = document.createElement('div');
+      card.className = 'name-card' + (i % 3 === 1 ? ' accent' : '');
+      card.textContent = name;
+      namesGrid.appendChild(card);
+      setTimeout(() => card.classList.add('pop'), i * 180);
+    });
+    setTimeout(() => launchConfetti(), 100);
+    pendingNames = [];
+    updateExcluded();
+    updateCount();
+  }
+
+  let confettiParticles = [], confettiRAF = null;
+  const COLORS = ['#E8651A','#CC2200','#2C1810','#f07830','#ff6640','#ffffff','#ffd090'];
+  function launchConfetti() {
+    canvas.width = stage.offsetWidth; canvas.height = stage.offsetHeight;
+    confettiParticles = [];
+    for (let i = 0; i < 140; i++) {
+      confettiParticles.push({ x: Math.random()*canvas.width, y: -10-Math.random()*80, vx: (Math.random()-0.5)*4, vy: 2+Math.random()*4, rot: Math.random()*360, rotV: (Math.random()-0.5)*8, w: 7+Math.random()*8, h: 4+Math.random()*5, color: COLORS[Math.floor(Math.random()*COLORS.length)], alpha: 1 });
+    }
+    if (confettiRAF) cancelAnimationFrame(confettiRAF);
+    animConfetti();
+  }
+  function animConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    confettiParticles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.rot += p.rotV; p.vx *= 0.99;
+      if (p.y > canvas.height * 0.7) p.alpha -= 0.025;
+      p.alpha = Math.max(0, p.alpha);
+      if (p.alpha > 0) {
+        alive = true;
+        ctx.save(); ctx.globalAlpha = p.alpha; ctx.translate(p.x, p.y); ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle = p.color; ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+      }
+    });
+    if (alive) confettiRAF = requestAnimationFrame(animConfetti);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  function updateExcluded() {
+    const ds = document.getElementById('drawnSection');
+    const dp = document.getElementById('drawnPills');
+    if (excluded.length === 0) { ds.classList.remove('visible'); return; }
+    ds.classList.add('visible');
+    dp.innerHTML = excluded.map(n=>`<span class="drawn-pill">${n}</span>`).join('');
+  }
+
+  function resetAll() {
+    excluded = []; pendingNames = [];
+    namesGrid.innerHTML = ''; namesGrid.style.display = 'none';
+    revealOverlay.classList.add('hidden');
+    idleMsg.style.display = '';
+    spotlight.classList.remove('on');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('drawnSection').classList.remove('visible');
+    updateCount();
+  }
+
+  updateCount();
+</script>
+</body>
+</html>
