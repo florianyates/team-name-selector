@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Team Agency — Name Selector</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -14,6 +13,8 @@
     --white: #ffffff;
     --brown-light: #4a2c1e;
     --orange-light: #f07830;
+    --line: #f0e8e0;
+    --cream: #fdf8f5;
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -23,13 +24,14 @@
     align-items: center;
     justify-content: center;
     padding: 24px;
+    color: var(--brown);
   }
+  button { font-family: inherit; cursor: pointer; }
   .app {
     display: flex;
-    gap: 0;
-    min-height: 560px;
+    min-height: 620px;
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 8px 40px rgba(44,24,16,0.18);
@@ -50,28 +52,39 @@
     text-transform: uppercase;
     letter-spacing: 1.2px;
   }
-  .sidebar textarea {
-    flex: 1;
+  .sidebar select {
+    width: 100%;
     background: var(--brown-light);
     border: 1px solid #5a3828;
     color: var(--white);
     border-radius: 6px;
-    padding: 10px;
+    padding: 9px 10px;
     font-size: 13px;
-    resize: none;
-    min-height: 280px;
-    line-height: 1.6;
     font-family: inherit;
   }
-  .sidebar textarea::placeholder { color: #8a6050; }
-  .sidebar textarea:focus { outline: none; border-color: var(--orange); }
-  .name-count {
+  .sidebar select:focus { outline: none; border-color: var(--orange); }
+  .side-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .side-btn {
     background: var(--brown-light);
+    color: #e8cfc0;
+    border: 1px solid #5a3828;
     border-radius: 6px;
-    padding: 8px 10px;
-    color: #c09080;
+    padding: 6px 10px;
     font-size: 12px;
   }
+  .side-btn:hover { border-color: var(--orange); color: var(--white); }
+  .side-btn.danger:hover { border-color: var(--red); }
+  .stats {
+    background: var(--brown-light);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #c09080;
+    font-size: 12px;
+    line-height: 1.9;
+  }
+  .stats strong { color: var(--white); font-weight: 600; }
+  .side-note { color: #8a6050; font-size: 11px; line-height: 1.5; margin-top: auto; }
+
   .main {
     flex: 1;
     background: var(--white);
@@ -100,16 +113,32 @@
     background: var(--red);
     transform: rotate(-40deg) translateX(-50%);
   }
+
+  .tabs { display: flex; background: var(--cream); border-bottom: 1px solid var(--line); padding: 0 12px; }
+  .tab {
+    background: none; border: none; padding: 12px 16px;
+    font-size: 13px; font-weight: 600; color: #a08070;
+    border-bottom: 3px solid transparent;
+  }
+  .tab:hover { color: var(--brown); }
+  .tab.active { color: var(--brown); border-bottom-color: var(--orange); }
+  .tab .badge {
+    background: #ede0d6; color: var(--brown); border-radius: 10px;
+    padding: 1px 7px; font-size: 11px; margin-left: 6px;
+  }
+  .panel { display: none; flex: 1; flex-direction: column; min-height: 0; }
+  .panel.active { display: flex; }
+
   .controls {
     padding: 14px 22px;
-    border-bottom: 1px solid #f0e8e0;
+    border-bottom: 1px solid var(--line);
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #fdf8f5;
+    background: var(--cream);
     flex-wrap: wrap;
   }
-  .controls label { font-size: 13px; color: var(--brown); font-weight: 500; white-space: nowrap; }
+  .controls label { font-size: 13px; font-weight: 500; white-space: nowrap; }
   .controls input[type=number] {
     width: 72px;
     border: 1.5px solid #d4b89a;
@@ -123,49 +152,23 @@
   }
   .controls input[type=number]:focus { outline: none; border-color: var(--orange); }
   .btn-draw {
-    background: var(--orange);
-    color: var(--white);
-    border: none;
-    border-radius: 6px;
-    padding: 9px 22px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    background: var(--orange); color: var(--white); border: none;
+    border-radius: 6px; padding: 9px 22px; font-size: 14px; font-weight: 600;
     box-shadow: 0 2px 0 #a84a0e;
-    font-family: inherit;
   }
   .btn-draw:hover { background: var(--orange-light); }
   .btn-draw:active { transform: translateY(1px); box-shadow: none; }
-  .btn-draw:disabled { background: #c0a090; box-shadow: none; cursor: not-allowed; }
   .btn-reset {
-    background: var(--red);
-    color: var(--white);
-    border: none;
-    border-radius: 6px;
-    padding: 9px 18px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-left: auto;
-    box-shadow: 0 2px 0 #881500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: inherit;
+    background: var(--red); color: var(--white); border: none;
+    border-radius: 6px; padding: 9px 18px; font-size: 13px; font-weight: 600;
+    margin-left: auto; box-shadow: 0 2px 0 #881500;
   }
   .btn-reset:hover { background: #e02600; }
   .btn-reset:active { transform: translateY(1px); box-shadow: none; }
 
   .stage {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-    min-height: 340px;
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 28px; position: relative; overflow: hidden; min-height: 300px;
   }
   .idle-msg { color: #c0a090; font-size: 14px; text-align: center; line-height: 1.8; }
   .names-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%; }
@@ -187,11 +190,22 @@
     100% { opacity: 1; transform: scale(1) rotate(0deg); }
   }
 
-  .drawn-section { padding: 10px 22px; border-top: 1px solid #f0e8e0; background: #fdf8f5; font-size: 12px; display: none; }
+  .drawn-section { padding: 10px 22px 14px; border-top: 1px solid var(--line); background: var(--cream); font-size: 12px; display: none; }
   .drawn-section.visible { display: block; }
-  .drawn-label { font-weight: 500; color: var(--brown); margin-bottom: 6px; font-size: 12px; }
+  .drawn-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .drawn-label { font-weight: 600; font-size: 12px; }
+  .link-btn { background: none; border: none; color: var(--orange); font-size: 12px; font-weight: 600; text-decoration: underline; }
+  .link-btn:hover { color: var(--red); }
   .drawn-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-  .drawn-pill { background: #ede0d6; color: var(--brown); border-radius: 20px; padding: 3px 10px; font-size: 11px; }
+  .drawn-pill {
+    background: #ede0d6; color: var(--brown); border-radius: 20px;
+    padding: 3px 4px 3px 11px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .drawn-pill button {
+    background: var(--brown); color: var(--white); border: none; border-radius: 12px;
+    font-size: 11px; padding: 2px 8px; font-weight: 600;
+  }
+  .drawn-pill button:hover { background: var(--orange); }
 
   .reveal-overlay {
     position: absolute; inset: 0; background: var(--brown);
@@ -205,127 +219,299 @@
   .reveal-btn {
     margin-top: 16px; background: var(--orange); color: var(--white); border: none;
     border-radius: 8px; padding: 14px 40px; font-size: 18px; font-weight: 600;
-    cursor: pointer; letter-spacing: 0.5px; font-family: inherit;
-    animation: pulse 1.8s ease-in-out infinite;
+    letter-spacing: 0.5px; animation: pulse 1.8s ease-in-out infinite;
   }
   @keyframes pulse {
     0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(232,101,26,0.5); }
     50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(232,101,26,0); }
   }
   .reveal-btn:hover { background: var(--orange-light); animation: none; transform: scale(1.04); }
-
   .drumroll-bar { width: 280px; height: 6px; background: rgba(255,255,255,0.12); border-radius: 3px; overflow: hidden; display: none; }
   .drumroll-fill { height: 100%; width: 0%; background: var(--orange); border-radius: 3px; }
   .drumroll-name { font-size: 30px; font-weight: 600; color: var(--white); min-height: 44px; text-align: center; opacity: 0; letter-spacing: 0.5px; }
-
   #confettiCanvas { position: absolute; inset: 0; pointer-events: none; z-index: 20; width: 100%; height: 100%; }
   .spotlight { position: absolute; inset: 0; pointer-events: none; z-index: 5; background: radial-gradient(ellipse 200px 300px at 50% -20%, rgba(232,101,26,0.18) 0%, transparent 70%); opacity: 0; transition: opacity 0.5s; }
   .spotlight.on { opacity: 1; }
+
+  /* Roster + history panels */
+  .scroll { overflow-y: auto; flex: 1; padding: 18px 22px; max-height: 520px; }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .toolbar input[type=text], .toolbar select, .bulk textarea {
+    border: 1.5px solid #d4b89a; border-radius: 6px; padding: 8px 10px;
+    font-size: 13px; font-family: inherit; color: var(--brown); background: var(--white);
+  }
+  .toolbar input[type=text] { flex: 1; min-width: 160px; }
+  .toolbar input:focus, .toolbar select:focus, .bulk textarea:focus { outline: none; border-color: var(--orange); }
+  .btn { background: var(--orange); color: var(--white); border: none; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; }
+  .btn:hover { background: var(--orange-light); }
+  .btn.ghost { background: #ede0d6; color: var(--brown); }
+  .btn.ghost:hover { background: #e2d0c2; }
+  .btn.danger { background: var(--red); }
+  .bulk { margin-bottom: 14px; display: none; }
+  .bulk.open { display: block; }
+  .bulk textarea { width: 100%; min-height: 110px; resize: vertical; line-height: 1.5; }
+  .bulk .hint { font-size: 12px; color: #a08070; margin: 6px 0; }
+  .roster-row {
+    display: flex; align-items: center; gap: 8px; padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .roster-row input {
+    flex: 1; border: 1.5px solid transparent; border-radius: 6px; padding: 7px 9px;
+    font-size: 14px; font-family: inherit; color: var(--brown); background: transparent;
+  }
+  .roster-row input:hover { border-color: #e6d6c8; }
+  .roster-row input:focus { outline: none; border-color: var(--orange); background: var(--white); }
+  .status { font-size: 11px; font-weight: 600; border-radius: 10px; padding: 2px 9px; }
+  .status.avail { background: #e3f1e3; color: #2a6a2a; }
+  .status.drawn { background: #ede0d6; color: #7a5040; }
+  .icon-btn { background: none; border: 1px solid #e0cfc2; color: var(--brown); border-radius: 6px; padding: 5px 10px; font-size: 12px; }
+  .icon-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .icon-btn.del:hover { border-color: var(--red); color: var(--red); }
+  .empty { color: #c0a090; text-align: center; padding: 40px 0; font-size: 14px; }
+  .hist-team { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); margin: 18px 0 6px; }
+  .hist-team:first-child { margin-top: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #a08070; padding: 6px 8px; border-bottom: 2px solid var(--line); }
+  td { padding: 8px; border-bottom: 1px solid var(--line); }
+  .storage-note { font-size: 12px; color: #a08070; padding: 0 22px 14px; }
+  @media (max-width: 760px) {
+    .app { flex-direction: column; }
+    .sidebar { width: 100%; min-width: 0; }
+  }
 </style>
 </head>
 <body>
 
 <div class="app">
   <div class="sidebar">
-    <div class="sidebar-title">Name pool</div>
-    <textarea id="nameInput" placeholder="Paste names here, one per line...&#10;&#10;Jane Smith&#10;John Doe&#10;Alex Johnson&#10;...">Allie
-Caesar
-Clyde
-Danvic
-Debie
-Earnest
-Ella
-Ivan
-Jiza
-JJ
-Lerica
-Mandy
-Mark
-Mike
-MJ
-Mon
-Myko
-Noelle
-Pollie
-Rahyen
-Ralph
-Reynald</textarea>
-    <div class="name-count" id="nameCount">0 names in pool</div>
+    <div class="sidebar-title">Team</div>
+    <select id="teamSelect"></select>
+    <div class="side-btns">
+      <button class="side-btn" id="teamNew">+ New</button>
+      <button class="side-btn" id="teamRename">Rename</button>
+      <button class="side-btn danger" id="teamDelete">Delete</button>
+    </div>
+
+    <div class="stats">
+      Available <strong id="statAvail">0</strong><br>
+      Drawn <strong id="statDrawn">0</strong><br>
+      On roster <strong id="statTotal">0</strong>
+    </div>
+
+    <div class="sidebar-title" style="margin-top:6px">Backup</div>
+    <div class="side-btns">
+      <button class="side-btn" id="exportBtn">Export</button>
+      <button class="side-btn" id="importBtn">Import</button>
+    </div>
+    <input type="file" id="importFile" accept="application/json" style="display:none">
+
+    <div class="side-note">Saved in this browser only. Use Export to back up or move to another device.</div>
   </div>
 
   <div class="main">
     <div class="header">
       <div class="logo-stripe"></div>
       <div>
-        <div class="header-title">Team Agency — Name Selector</div>
+        <div class="header-title" id="headerTitle">Team Agency — Name Selector</div>
         <div class="header-sub">Random draw with persistent exclusions</div>
       </div>
     </div>
 
-    <div class="controls">
-      <label for="countInput">Draw</label>
-      <input type="number" id="countInput" value="1" min="1" max="999">
-      <label for="countInput" style="margin-left:-8px">names</label>
-      <button class="btn-draw" onclick="startDraw()">Draw now</button>
-      <button class="btn-reset" onclick="resetAll()"><i class="ti ti-refresh"></i> Reset pool</button>
+    <div class="tabs">
+      <button class="tab active" data-tab="draw">Draw</button>
+      <button class="tab" data-tab="roster">Roster<span class="badge" id="rosterBadge">0</span></button>
+      <button class="tab" data-tab="history">History<span class="badge" id="historyBadge">0</span></button>
     </div>
 
-    <div class="stage" id="stage">
-      <div class="spotlight" id="spotlight"></div>
-      <canvas id="confettiCanvas"></canvas>
-      <div class="idle-msg" id="idleMsg">Paste names into the panel on the left,<br>set how many to draw, then hit <strong>Draw now</strong>.</div>
-      <div class="names-grid" id="namesGrid" style="display:none"></div>
+    <!-- DRAW -->
+    <div class="panel active" id="panel-draw">
+      <div class="controls">
+        <label for="countInput">Draw</label>
+        <input type="number" id="countInput" value="1" min="1" max="999">
+        <label for="countInput" style="margin-left:-8px">names</label>
+        <button class="btn-draw" id="drawBtn">Draw now</button>
+        <button class="btn-reset" id="resetBtn" title="Put every drawn name back in the pool">Return all to pool</button>
+      </div>
 
-      <div class="reveal-overlay hidden" id="revealOverlay">
-        <div class="reveal-eyebrow">Team Agency</div>
-        <div class="reveal-headline" id="revealHeadline">Ready to draw...</div>
-        <div class="reveal-sub" id="revealSub"></div>
-        <div class="drumroll-name" id="drumrollName"></div>
-        <div class="drumroll-bar" id="drumrollBar"><div class="drumroll-fill" id="drumrollFill"></div></div>
-        <button class="reveal-btn" id="revealBtn" onclick="beginReveal()">🎲 Draw!</button>
+      <div class="stage" id="stage">
+        <div class="spotlight" id="spotlight"></div>
+        <canvas id="confettiCanvas"></canvas>
+        <div class="idle-msg" id="idleMsg">Set how many names to draw, then hit <strong>Draw now</strong>.<br>Manage who is in the pool on the <strong>Roster</strong> tab.</div>
+        <div class="names-grid" id="namesGrid" style="display:none"></div>
+
+        <div class="reveal-overlay hidden" id="revealOverlay">
+          <div class="reveal-eyebrow" id="revealEyebrow">Team Agency</div>
+          <div class="reveal-headline" id="revealHeadline">Ready to draw...</div>
+          <div class="reveal-sub" id="revealSub"></div>
+          <div class="drumroll-name" id="drumrollName"></div>
+          <div class="drumroll-bar" id="drumrollBar"><div class="drumroll-fill" id="drumrollFill"></div></div>
+          <button class="reveal-btn" id="revealBtn">🎲 Draw!</button>
+        </div>
+      </div>
+
+      <div class="drawn-section" id="drawnSection">
+        <div class="drawn-head">
+          <div class="drawn-label">Drawn (excluded from pool) — click Add back to return someone</div>
+        </div>
+        <div class="drawn-pills" id="drawnPills"></div>
       </div>
     </div>
 
-    <div class="drawn-section" id="drawnSection">
-      <div class="drawn-label">Previously drawn (excluded from pool)</div>
-      <div class="drawn-pills" id="drawnPills"></div>
+    <!-- ROSTER -->
+    <div class="panel" id="panel-roster">
+      <div class="scroll">
+        <div class="toolbar">
+          <input type="text" id="addName" placeholder="Add a person, then press Enter">
+          <button class="btn" id="addBtn">Add</button>
+          <button class="btn ghost" id="bulkToggle">Paste a list</button>
+        </div>
+        <div class="bulk" id="bulkBox">
+          <textarea id="bulkText" placeholder="One name per line..."></textarea>
+          <div class="hint">Names already on the roster are skipped.</div>
+          <button class="btn" id="bulkAdd">Add these names</button>
+          <button class="btn ghost" id="bulkCancel">Cancel</button>
+        </div>
+        <div id="rosterList"></div>
+      </div>
+      <div class="storage-note">Click a name to edit it. Removing someone takes them off the roster; their past draws stay in History.</div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="panel" id="panel-history">
+      <div class="scroll">
+        <div class="toolbar">
+          <select id="historyFilter"></select>
+          <button class="btn ghost" id="historyClear" style="margin-left:auto">Clear this view</button>
+        </div>
+        <div id="historyList"></div>
+      </div>
+      <div class="storage-note">Every draw is recorded here by team. "Add back" returns a drawn person to the pool.</div>
     </div>
   </div>
 </div>
 
 <script>
-  let excluded = [], pendingNames = [];
-  const nameInput = document.getElementById('nameInput');
-  const nameCount = document.getElementById('nameCount');
-  const countInput = document.getElementById('countInput');
-  const stage = document.getElementById('stage');
-  const idleMsg = document.getElementById('idleMsg');
-  const namesGrid = document.getElementById('namesGrid');
-  const revealOverlay = document.getElementById('revealOverlay');
-  const revealHeadline = document.getElementById('revealHeadline');
-  const revealSub = document.getElementById('revealSub');
-  const revealBtn = document.getElementById('revealBtn');
-  const drumrollName = document.getElementById('drumrollName');
-  const drumrollBar = document.getElementById('drumrollBar');
-  const drumrollFill = document.getElementById('drumrollFill');
-  const spotlight = document.getElementById('spotlight');
-  const canvas = document.getElementById('confettiCanvas');
-  const ctx = canvas.getContext('2d');
+  /* ---------- Data ---------- */
+  const KEY = 'teamNameSelector.v1';
+  const DEFAULT_TEAM = 'Team Agency';
+  const DEFAULT_ROSTER = ['Alexa','Allie','Anne','Bella','Caesar','Clyde','Cristal','Danvic','Debie','Drew','Earnest','Ella','Emil','Estella','Florian','France','Jam','Jen','Jiza','JJ','Ken','Kennedy','Lerica','Lester','Lorie','Lors','Mandy','Mark','Micole','Mike','MJ','Myko','Nelson','Noelle','Paulo','Pollie','Rahyen','Ralph','Reynald'];
 
-  nameInput.addEventListener('input', updateCount);
-  function getNames() { return nameInput.value.split('\n').map(n=>n.trim()).filter(n=>n.length>0); }
-  function getPool() { return getNames().filter(n=>!excluded.includes(n)); }
-  function updateCount() {
-    const pool = getPool();
-    nameCount.textContent = pool.length + ' available' + (excluded.length ? ` (${excluded.length} drawn)` : '');
+  function freshState() {
+    return { current: DEFAULT_TEAM, teams: { [DEFAULT_TEAM]: { roster: [...DEFAULT_ROSTER], excluded: [] } }, history: [] };
   }
+  function validState(s) {
+    return s && typeof s === 'object' && s.teams && typeof s.teams === 'object' &&
+      Object.keys(s.teams).length > 0 && Array.isArray(s.history);
+  }
+  function load() {
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY));
+      if (validState(s)) {
+        Object.values(s.teams).forEach(t => { t.roster = t.roster || []; t.excluded = t.excluded || []; });
+        if (!s.teams[s.current]) s.current = Object.keys(s.teams)[0];
+        return s;
+      }
+    } catch (e) {}
+    return freshState();
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  let state = load();
+  let pendingNames = [];
+  const team = () => state.teams[state.current];
+  const getPool = () => team().roster.filter(n => !team().excluded.includes(n));
+  const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
+  const hasName = (list, n) => list.some(x => sameName(x, n));
+
+  /* ---------- Helpers ---------- */
+  const $ = id => document.getElementById(id);
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  /* ---------- Tabs ---------- */
+  function showTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+    document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+    if (name === 'roster') renderRoster();
+    if (name === 'history') renderHistory();
+  }
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+
+  /* ---------- Teams ---------- */
+  function renderTeams() {
+    const sel = $('teamSelect');
+    sel.innerHTML = '';
+    Object.keys(state.teams).forEach(name => {
+      const o = el('option', '', name);
+      o.value = name;
+      if (name === state.current) o.selected = true;
+      sel.appendChild(o);
+    });
+    $('headerTitle').textContent = state.current + ' — Name Selector';
+    $('revealEyebrow').textContent = state.current;
+  }
+  $('teamSelect').addEventListener('change', e => {
+    state.current = e.target.value; pendingNames = [];
+    save(); resetStage(); refresh();
+  });
+  $('teamNew').addEventListener('click', () => {
+    const name = (prompt('Name for the new team:') || '').trim();
+    if (!name) return;
+    if (Object.keys(state.teams).some(t => sameName(t, name))) { alert('A team with that name already exists.'); return; }
+    state.teams[name] = { roster: [], excluded: [] };
+    state.current = name;
+    save(); resetStage(); refresh(); showTab('roster');
+  });
+  $('teamRename').addEventListener('click', () => {
+    const old = state.current;
+    const name = (prompt('Rename team:', old) || '').trim();
+    if (!name || name === old) return;
+    if (Object.keys(state.teams).some(t => t !== old && sameName(t, name))) { alert('A team with that name already exists.'); return; }
+    const rebuilt = {};
+    Object.keys(state.teams).forEach(k => { rebuilt[k === old ? name : k] = state.teams[k]; });
+    state.teams = rebuilt;
+    state.history.forEach(h => { if (h.team === old) h.team = name; });
+    state.current = name;
+    save(); refresh();
+  });
+  $('teamDelete').addEventListener('click', () => {
+    if (Object.keys(state.teams).length < 2) { alert('You need at least one team.'); return; }
+    if (!confirm('Delete team "' + state.current + '" and its roster? Its draw history is kept.')) return;
+    delete state.teams[state.current];
+    state.current = Object.keys(state.teams)[0];
+    save(); resetStage(); refresh();
+  });
+
+  /* ---------- Draw ---------- */
+  const countInput = $('countInput'), stage = $('stage'), idleMsg = $('idleMsg'),
+        namesGrid = $('namesGrid'), revealOverlay = $('revealOverlay'),
+        revealHeadline = $('revealHeadline'), revealSub = $('revealSub'),
+        revealBtn = $('revealBtn'), drumrollName = $('drumrollName'),
+        drumrollBar = $('drumrollBar'), drumrollFill = $('drumrollFill'),
+        spotlight = $('spotlight'), canvas = $('confettiCanvas'),
+        ctx = canvas.getContext('2d');
+
+  $('drawBtn').addEventListener('click', startDraw);
+  revealBtn.addEventListener('click', beginReveal);
 
   function startDraw() {
     const pool = getPool();
     const want = parseInt(countInput.value) || 1;
-    if (pool.length === 0) { alert('No names in the pool. Paste names on the left first.'); return; }
+    if (pool.length === 0) { alert('Nobody left in the pool. Add people on the Roster tab or return drawn names to the pool.'); return; }
     const count = Math.min(want, pool.length);
-    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    const shuffled = [...pool];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
     pendingNames = shuffled.slice(0, count);
     revealHeadline.textContent = count === 1 ? 'One name is about to be drawn...' : `${count} names are about to be drawn...`;
     revealSub.textContent = "When you're ready, hit the button";
@@ -346,17 +532,16 @@ Reynald</textarea>
     revealHeadline.textContent = pendingNames.length === 1 ? 'And the winner is...' : 'Drawing names...';
     drumrollBar.style.display = 'block';
     drumrollName.style.opacity = '1';
-    const allNames = getPool().concat(pendingNames);
+    const allNames = getPool();
     const duration = Math.min(2800, 1200 + pendingNames.length * 300);
-    let start = null, tickInterval = 60;
-    function tick(ts) {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
+    const start = performance.now();
+    function tick() {
+      const progress = Math.min((performance.now() - start) / duration, 1);
       drumrollFill.style.width = (progress * 100) + '%';
       const eased = progress < 0.5 ? 2*progress*progress : -1+(4-2*progress)*progress;
-      tickInterval = 60 + eased * 260;
+      const tickInterval = 60 + eased * 260;
       drumrollName.textContent = allNames[Math.floor(Math.random() * allNames.length)];
-      if (progress < 1) { setTimeout(() => requestAnimationFrame(tick), tickInterval); }
+      if (progress < 1) { setTimeout(tick, tickInterval); }
       else {
         drumrollName.textContent = '';
         drumrollBar.style.display = 'none';
@@ -365,24 +550,24 @@ Reynald</textarea>
         showCards();
       }
     }
-    requestAnimationFrame(tick);
+    tick();
   }
 
   function showCards() {
     namesGrid.style.display = 'flex';
     spotlight.classList.remove('on');
+    const now = new Date().toISOString();
     pendingNames.forEach((name, i) => {
-      excluded.push(name);
-      const card = document.createElement('div');
-      card.className = 'name-card' + (i % 3 === 1 ? ' accent' : '');
-      card.textContent = name;
+      if (!hasName(team().excluded, name)) team().excluded.push(name);
+      state.history.push({ id: Date.now() + '-' + i, team: state.current, name, date: now });
+      const card = el('div', 'name-card' + (i % 3 === 1 ? ' accent' : ''), name);
       namesGrid.appendChild(card);
       setTimeout(() => card.classList.add('pop'), i * 180);
     });
-    setTimeout(() => launchConfetti(), 100);
+    setTimeout(launchConfetti, 100);
     pendingNames = [];
-    updateExcluded();
-    updateCount();
+    save();
+    refresh();
   }
 
   let confettiParticles = [], confettiRAF = null;
@@ -413,26 +598,224 @@ Reynald</textarea>
     else ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  function updateExcluded() {
-    const ds = document.getElementById('drawnSection');
-    const dp = document.getElementById('drawnPills');
-    if (excluded.length === 0) { ds.classList.remove('visible'); return; }
-    ds.classList.add('visible');
-    dp.innerHTML = excluded.map(n=>`<span class="drawn-pill">${n}</span>`).join('');
-  }
-
-  function resetAll() {
-    excluded = []; pendingNames = [];
+  function resetStage() {
     namesGrid.innerHTML = ''; namesGrid.style.display = 'none';
     revealOverlay.classList.add('hidden');
     idleMsg.style.display = '';
     spotlight.classList.remove('on');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    document.getElementById('drawnSection').classList.remove('visible');
-    updateCount();
   }
 
-  updateCount();
+  function addBack(name) {
+    const t = team();
+    t.excluded = t.excluded.filter(n => !sameName(n, name));
+    save(); refresh();
+  }
+  $('resetBtn').addEventListener('click', () => {
+    if (team().excluded.length === 0) return;
+    if (!confirm('Put all ' + team().excluded.length + ' drawn names back in the pool?')) return;
+    team().excluded = [];
+    save(); resetStage(); refresh();
+  });
+
+  function renderDrawn() {
+    const section = $('drawnSection'), pills = $('drawnPills');
+    const ex = team().excluded;
+    pills.innerHTML = '';
+    if (ex.length === 0) { section.classList.remove('visible'); return; }
+    section.classList.add('visible');
+    ex.forEach(n => {
+      const pill = el('span', 'drawn-pill');
+      pill.appendChild(el('span', '', n));
+      const b = el('button', '', 'Add back');
+      b.addEventListener('click', () => addBack(n));
+      pill.appendChild(b);
+      pills.appendChild(pill);
+    });
+  }
+
+  /* ---------- Roster ---------- */
+  function addPeople(names) {
+    const t = team();
+    let added = 0;
+    names.map(n => n.trim()).filter(Boolean).forEach(n => {
+      if (!hasName(t.roster, n)) { t.roster.push(n); added++; }
+    });
+    t.roster.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+    save(); refresh();
+    return added;
+  }
+  function addOne() {
+    const input = $('addName');
+    const name = input.value.trim();
+    if (!name) return;
+    if (hasName(team().roster, name)) { alert(name + ' is already on the roster.'); return; }
+    addPeople([name]);
+    input.value = ''; input.focus();
+  }
+  $('addBtn').addEventListener('click', addOne);
+  $('addName').addEventListener('keydown', e => { if (e.key === 'Enter') addOne(); });
+  $('bulkToggle').addEventListener('click', () => $('bulkBox').classList.toggle('open'));
+  $('bulkCancel').addEventListener('click', () => { $('bulkText').value = ''; $('bulkBox').classList.remove('open'); });
+  $('bulkAdd').addEventListener('click', () => {
+    const lines = $('bulkText').value.split('\n');
+    const added = addPeople(lines);
+    $('bulkText').value = ''; $('bulkBox').classList.remove('open');
+    alert(added + ' name' + (added === 1 ? '' : 's') + ' added.');
+  });
+
+  function renameMember(oldName, newName) {
+    newName = newName.trim();
+    const t = team();
+    if (!newName || newName === oldName) return false;
+    if (t.roster.some(n => n !== oldName && sameName(n, newName))) { alert(newName + ' is already on the roster.'); return false; }
+    t.roster = t.roster.map(n => n === oldName ? newName : n);
+    t.excluded = t.excluded.map(n => n === oldName ? newName : n);
+    state.history.forEach(h => { if (h.team === state.current && h.name === oldName) h.name = newName; });
+    save();
+    return true;
+  }
+  function removeMember(name) {
+    if (!confirm('Remove ' + name + ' from ' + state.current + '? Their past draws stay in History.')) return;
+    const t = team();
+    t.roster = t.roster.filter(n => n !== name);
+    t.excluded = t.excluded.filter(n => n !== name);
+    save(); refresh();
+  }
+
+  function renderRoster() {
+    const list = $('rosterList');
+    list.innerHTML = '';
+    const t = team();
+    if (t.roster.length === 0) { list.appendChild(el('div', 'empty', 'No one on this team yet. Add people above.')); return; }
+    t.roster.forEach(name => {
+      const row = el('div', 'roster-row');
+      const input = el('input');
+      input.type = 'text'; input.value = name; input.setAttribute('aria-label', 'Edit name ' + name);
+      const commit = () => { if (renameMember(name, input.value)) refresh(); else input.value = name; };
+      input.addEventListener('change', commit);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = name; input.blur(); } });
+      row.appendChild(input);
+
+      const drawn = hasName(t.excluded, name);
+      row.appendChild(el('span', 'status ' + (drawn ? 'drawn' : 'avail'), drawn ? 'Drawn' : 'In pool'));
+      if (drawn) {
+        const b = el('button', 'icon-btn', 'Add back');
+        b.addEventListener('click', () => addBack(name));
+        row.appendChild(b);
+      }
+      const del = el('button', 'icon-btn del', 'Remove');
+      del.addEventListener('click', () => removeMember(name));
+      row.appendChild(del);
+      list.appendChild(row);
+    });
+  }
+
+  /* ---------- History ---------- */
+  function renderHistoryFilter() {
+    const sel = $('historyFilter');
+    const keep = sel.value || '__all';
+    sel.innerHTML = '';
+    const all = el('option', '', 'All teams'); all.value = '__all'; sel.appendChild(all);
+    const names = new Set(Object.keys(state.teams));
+    state.history.forEach(h => names.add(h.team));
+    names.forEach(n => { const o = el('option', '', n); o.value = n; sel.appendChild(o); });
+    sel.value = [...sel.options].some(o => o.value === keep) ? keep : '__all';
+  }
+  function renderHistory() {
+    renderHistoryFilter();
+    const filter = $('historyFilter').value;
+    const rows = state.history.filter(h => filter === '__all' || h.team === filter);
+    const box = $('historyList');
+    box.innerHTML = '';
+    if (rows.length === 0) { box.appendChild(el('div', 'empty', 'No draws recorded yet.')); return; }
+    const byTeam = {};
+    rows.forEach(h => { (byTeam[h.team] = byTeam[h.team] || []).push(h); });
+    Object.keys(byTeam).forEach(tn => {
+      box.appendChild(el('div', 'hist-team', tn + ' (' + byTeam[tn].length + ')'));
+      const table = el('table');
+      const head = el('tr');
+      ['#', 'Name', 'Drawn on', ''].forEach(h => head.appendChild(el('th', '', h)));
+      table.appendChild(head);
+      byTeam[tn].slice().reverse().forEach((h, i, arr) => {
+        const tr = el('tr');
+        tr.appendChild(el('td', '', String(arr.length - i)));
+        tr.appendChild(el('td', '', h.name));
+        tr.appendChild(el('td', '', fmtDate(h.date)));
+        const td = el('td');
+        const tm = state.teams[h.team];
+        if (tm && hasName(tm.excluded, h.name)) {
+          const b = el('button', 'icon-btn', 'Add back');
+          b.addEventListener('click', () => {
+            tm.excluded = tm.excluded.filter(n => !sameName(n, h.name));
+            save(); refresh(); renderHistory();
+          });
+          td.appendChild(b);
+        } else if (tm && hasName(tm.roster, h.name)) {
+          td.appendChild(el('span', 'status avail', 'In pool'));
+        } else {
+          td.appendChild(el('span', 'status drawn', 'Left team'));
+        }
+        tr.appendChild(td);
+        table.appendChild(tr);
+      });
+      box.appendChild(table);
+    });
+  }
+  $('historyFilter').addEventListener('change', renderHistory);
+  $('historyClear').addEventListener('click', () => {
+    const filter = $('historyFilter').value;
+    const label = filter === '__all' ? 'ALL draw history' : 'the draw history for ' + filter;
+    if (!confirm('Permanently clear ' + label + '? This does not change who is in the pool.')) return;
+    state.history = state.history.filter(h => filter !== '__all' && h.team !== filter);
+    save(); refresh(); renderHistory();
+  });
+
+  /* ---------- Backup ---------- */
+  $('exportBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'team-name-selector-backup.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  $('importBtn').addEventListener('click', () => $('importFile').click());
+  $('importFile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const s = JSON.parse(reader.result);
+        if (!validState(s)) throw new Error('bad');
+        if (!confirm('Replace everything in the app with this backup?')) return;
+        Object.values(s.teams).forEach(t => { t.roster = t.roster || []; t.excluded = t.excluded || []; });
+        if (!s.teams[s.current]) s.current = Object.keys(s.teams)[0];
+        state = s; save(); resetStage(); refresh();
+      } catch (err) { alert('That file is not a valid backup.'); }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  /* ---------- Refresh ---------- */
+  function refresh() {
+    renderTeams();
+    const t = team();
+    const avail = getPool().length;
+    $('statAvail').textContent = avail;
+    $('statDrawn').textContent = t.excluded.length;
+    $('statTotal').textContent = t.roster.length;
+    $('rosterBadge').textContent = t.roster.length;
+    $('historyBadge').textContent = state.history.length;
+    renderDrawn();
+    if ($('panel-roster').classList.contains('active')) renderRoster();
+    if ($('panel-history').classList.contains('active')) renderHistory();
+  }
+
+  save();
+  refresh();
 </script>
 </body>
 </html>
