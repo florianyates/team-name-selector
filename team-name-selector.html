@@ -37,8 +37,8 @@
     box-shadow: 0 8px 40px rgba(44,24,16,0.18);
   }
   .sidebar {
-    width: 230px;
-    min-width: 230px;
+    width: 220px;
+    min-width: 220px;
     background: var(--brown);
     padding: 18px;
     display: flex;
@@ -52,17 +52,6 @@
     text-transform: uppercase;
     letter-spacing: 1.2px;
   }
-  .sidebar select {
-    width: 100%;
-    background: var(--brown-light);
-    border: 1px solid #5a3828;
-    color: var(--white);
-    border-radius: 6px;
-    padding: 9px 10px;
-    font-size: 13px;
-    font-family: inherit;
-  }
-  .sidebar select:focus { outline: none; border-color: var(--orange); }
   .side-btns { display: flex; gap: 6px; flex-wrap: wrap; }
   .side-btn {
     background: var(--brown-light);
@@ -73,7 +62,6 @@
     font-size: 12px;
   }
   .side-btn:hover { border-color: var(--orange); color: var(--white); }
-  .side-btn.danger:hover { border-color: var(--red); }
   .stats {
     background: var(--brown-light);
     border-radius: 6px;
@@ -168,9 +156,13 @@
 
   .stage {
     flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 28px; position: relative; overflow: hidden; min-height: 300px;
+    padding: 28px; position: relative; overflow: hidden; min-height: 300px; gap: 16px;
   }
   .idle-msg { color: #c0a090; font-size: 14px; text-align: center; line-height: 1.8; }
+  .team-label {
+    display: none; font-size: 12px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--orange);
+  }
   .names-grid { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%; }
   .name-card {
     background: var(--brown); color: var(--white);
@@ -192,10 +184,7 @@
 
   .drawn-section { padding: 10px 22px 14px; border-top: 1px solid var(--line); background: var(--cream); font-size: 12px; display: none; }
   .drawn-section.visible { display: block; }
-  .drawn-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .drawn-label { font-weight: 600; font-size: 12px; }
-  .link-btn { background: none; border: none; color: var(--orange); font-size: 12px; font-weight: 600; text-decoration: underline; }
-  .link-btn:hover { color: var(--red); }
+  .drawn-label { font-weight: 600; font-size: 12px; margin-bottom: 8px; }
   .drawn-pills { display: flex; flex-wrap: wrap; gap: 6px; }
   .drawn-pill {
     background: #ede0d6; color: var(--brown); border-radius: 20px;
@@ -236,44 +225,59 @@
   /* Roster + history panels */
   .scroll { overflow-y: auto; flex: 1; padding: 18px 22px; max-height: 520px; }
   .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
-  .toolbar input[type=text], .toolbar select, .bulk textarea {
+  .toolbar input[type=text], select.sel, .bulk textarea {
     border: 1.5px solid #d4b89a; border-radius: 6px; padding: 8px 10px;
     font-size: 13px; font-family: inherit; color: var(--brown); background: var(--white);
   }
   .toolbar input[type=text] { flex: 1; min-width: 160px; }
-  .toolbar input:focus, .toolbar select:focus, .bulk textarea:focus { outline: none; border-color: var(--orange); }
+  .toolbar input:focus, select.sel:focus, .bulk textarea:focus { outline: none; border-color: var(--orange); }
+  select.sel.small { padding: 5px 8px; font-size: 12px; }
   .btn { background: var(--orange); color: var(--white); border: none; border-radius: 6px; padding: 8px 14px; font-size: 13px; font-weight: 600; }
   .btn:hover { background: var(--orange-light); }
   .btn.ghost { background: #ede0d6; color: var(--brown); }
   .btn.ghost:hover { background: #e2d0c2; }
-  .btn.danger { background: var(--red); }
   .bulk { margin-bottom: 14px; display: none; }
   .bulk.open { display: block; }
   .bulk textarea { width: 100%; min-height: 110px; resize: vertical; line-height: 1.5; }
   .bulk .hint { font-size: 12px; color: #a08070; margin: 6px 0; }
   .roster-row {
     display: flex; align-items: center; gap: 8px; padding: 6px 0;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--line); flex-wrap: wrap;
   }
   .roster-row input {
-    flex: 1; border: 1.5px solid transparent; border-radius: 6px; padding: 7px 9px;
+    flex: 1; min-width: 120px; border: 1.5px solid transparent; border-radius: 6px; padding: 7px 9px;
     font-size: 14px; font-family: inherit; color: var(--brown); background: transparent;
   }
   .roster-row input:hover { border-color: #e6d6c8; }
   .roster-row input:focus { outline: none; border-color: var(--orange); background: var(--white); }
-  .status { font-size: 11px; font-weight: 600; border-radius: 10px; padding: 2px 9px; }
+  .status { font-size: 11px; font-weight: 600; border-radius: 10px; padding: 2px 9px; white-space: nowrap; }
   .status.avail { background: #e3f1e3; color: #2a6a2a; }
   .status.drawn { background: #ede0d6; color: #7a5040; }
   .icon-btn { background: none; border: 1px solid #e0cfc2; color: var(--brown); border-radius: 6px; padding: 5px 10px; font-size: 12px; }
   .icon-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .icon-btn.primary { background: var(--orange); border-color: var(--orange); color: var(--white); }
+  .icon-btn.primary:hover { background: var(--orange-light); color: var(--white); }
   .icon-btn.del:hover { border-color: var(--red); color: var(--red); }
   .empty { color: #c0a090; text-align: center; padding: 40px 0; font-size: 14px; }
-  .hist-team { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); margin: 18px 0 6px; }
-  .hist-team:first-child { margin-top: 0; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #a08070; padding: 6px 8px; border-bottom: 2px solid var(--line); }
-  td { padding: 8px; border-bottom: 1px solid var(--line); }
   .storage-note { font-size: 12px; color: #a08070; padding: 0 22px 14px; }
+
+  .team-card { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .team-card-head {
+    display: flex; align-items: center; gap: 10px; padding: 9px 14px;
+    background: var(--cream); border-bottom: 1px solid var(--line);
+  }
+  .team-card-title { font-weight: 700; font-size: 14px; }
+  .team-card-date { font-size: 12px; color: #a08070; }
+  .team-card-head .spacer { flex: 1; }
+  .team-card-body { padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .chip {
+    background: var(--brown); color: var(--white); border-radius: 16px;
+    padding: 4px 6px 4px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .chip.left { background: #b9a89c; }
+  .chip button { background: rgba(255,255,255,0.18); color: var(--white); border: none; border-radius: 10px; width: 18px; height: 18px; font-size: 12px; line-height: 1; }
+  .chip button:hover { background: var(--red); }
+  .team-empty { color: #c0a090; font-size: 13px; }
   @media (max-width: 760px) {
     .app { flex-direction: column; }
     .sidebar { width: 100%; min-width: 0; }
@@ -284,18 +288,12 @@
 
 <div class="app">
   <div class="sidebar">
-    <div class="sidebar-title">Team</div>
-    <select id="teamSelect"></select>
-    <div class="side-btns">
-      <button class="side-btn" id="teamNew">+ New</button>
-      <button class="side-btn" id="teamRename">Rename</button>
-      <button class="side-btn danger" id="teamDelete">Delete</button>
-    </div>
-
+    <div class="sidebar-title">Season</div>
     <div class="stats">
       Available <strong id="statAvail">0</strong><br>
       Drawn <strong id="statDrawn">0</strong><br>
-      On roster <strong id="statTotal">0</strong>
+      On roster <strong id="statTotal">0</strong><br>
+      Teams drawn <strong id="statTeams">0</strong>
     </div>
 
     <div class="sidebar-title" style="margin-top:6px">Backup</div>
@@ -312,31 +310,32 @@
     <div class="header">
       <div class="logo-stripe"></div>
       <div>
-        <div class="header-title" id="headerTitle">Team Agency — Name Selector</div>
-        <div class="header-sub">Random draw with persistent exclusions</div>
+        <div class="header-title">Team Agency — Name Selector</div>
+        <div class="header-sub">Each draw makes the next team, tracked across the season</div>
       </div>
     </div>
 
     <div class="tabs">
       <button class="tab active" data-tab="draw">Draw</button>
       <button class="tab" data-tab="roster">Roster<span class="badge" id="rosterBadge">0</span></button>
-      <button class="tab" data-tab="history">History<span class="badge" id="historyBadge">0</span></button>
+      <button class="tab" data-tab="history">Teams<span class="badge" id="historyBadge">0</span></button>
     </div>
 
     <!-- DRAW -->
     <div class="panel active" id="panel-draw">
       <div class="controls">
         <label for="countInput">Draw</label>
-        <input type="number" id="countInput" value="1" min="1" max="999">
+        <input type="number" id="countInput" value="3" min="1" max="999">
         <label for="countInput" style="margin-left:-8px">names</label>
         <button class="btn-draw" id="drawBtn">Draw now</button>
-        <button class="btn-reset" id="resetBtn" title="Put every drawn name back in the pool">Return all to pool</button>
+        <button class="btn-reset" id="resetBtn" title="Put every drawn name back in the pool. Team records are kept.">Return all to pool</button>
       </div>
 
       <div class="stage" id="stage">
         <div class="spotlight" id="spotlight"></div>
         <canvas id="confettiCanvas"></canvas>
-        <div class="idle-msg" id="idleMsg">Set how many names to draw, then hit <strong>Draw now</strong>.<br>Manage who is in the pool on the <strong>Roster</strong> tab.</div>
+        <div class="idle-msg" id="idleMsg">Set how many names make up a team, then hit <strong>Draw now</strong>.<br>Manage the roster on the <strong>Roster</strong> tab.</div>
+        <div class="team-label" id="teamLabel"></div>
         <div class="names-grid" id="namesGrid" style="display:none"></div>
 
         <div class="reveal-overlay hidden" id="revealOverlay">
@@ -350,9 +349,7 @@
       </div>
 
       <div class="drawn-section" id="drawnSection">
-        <div class="drawn-head">
-          <div class="drawn-label">Drawn (excluded from pool) — click Add back to return someone</div>
-        </div>
+        <div class="drawn-label">Drawn (out of the pool) — Add back to undraw someone</div>
         <div class="drawn-pills" id="drawnPills"></div>
       </div>
     </div>
@@ -373,58 +370,76 @@
         </div>
         <div id="rosterList"></div>
       </div>
-      <div class="storage-note">Click a name to edit it. Removing someone takes them off the roster; their past draws stay in History.</div>
+      <div class="storage-note">Click a name to edit it. <strong>Draw</strong> marks someone drawn and puts them in a team; <strong>Undraw</strong> puts them back in the pool and removes them from their team. Remove takes someone off the roster; their past teams stay.</div>
     </div>
 
-    <!-- HISTORY -->
+    <!-- TEAMS -->
     <div class="panel" id="panel-history">
       <div class="scroll">
         <div class="toolbar">
-          <select id="historyFilter"></select>
-          <button class="btn ghost" id="historyClear" style="margin-left:auto">Clear this view</button>
+          <button class="btn" id="newTeamBtn">+ New team</button>
+          <button class="btn ghost" id="historyClear" style="margin-left:auto">Clear all teams</button>
         </div>
         <div id="historyList"></div>
       </div>
-      <div class="storage-note">Every draw is recorded here by team. "Add back" returns a drawn person to the pool.</div>
+      <div class="storage-note">Team 1 is the first draw, Team 2 the next, and so on. Use × on a name to undraw them, or add people to a team to rebuild lost records.</div>
     </div>
   </div>
 </div>
 
 <script>
-  /* ---------- Data ---------- */
-  const KEY = 'teamNameSelector.v1';
-  const DEFAULT_TEAM = 'Team Agency';
+  /* ---------- Data ----------
+     roster:   everyone on the team list
+     excluded: people drawn and currently out of the pool
+     teams:    [{ date, members: [names] }]  (Team N = position in this list)  */
+  const KEY = 'teamNameSelector.v2';
+  const OLD_KEY = 'teamNameSelector.v1';
   const DEFAULT_ROSTER = ['Alexa','Allie','Anne','Bella','Caesar','Clyde','Cristal','Danvic','Debie','Drew','Earnest','Ella','Emil','Estella','Florian','France','Jam','Jen','Jiza','JJ','Kennedy','Kenneth','Lerica','Lester','Lorie','Lors','Mandy','Mark','Micole','Mike','MJ','Myko','Nelson','Noelle','Paulo','Pollie','Rahyen','Ralph','Reynald'];
 
-  function freshState() {
-    return { current: DEFAULT_TEAM, teams: { [DEFAULT_TEAM]: { roster: [...DEFAULT_ROSTER], excluded: [] } }, history: [] };
+  function freshState() { return { roster: [...DEFAULT_ROSTER], excluded: [], teams: [] }; }
+  const isV2 = s => s && typeof s === 'object' && Array.isArray(s.roster) && Array.isArray(s.teams);
+  const isV1 = s => s && typeof s === 'object' && s.teams && !Array.isArray(s.teams) && Array.isArray(s.history);
+
+  // Old format kept one list per "team" and a flat draw log; turn each draw (same timestamp) into Team N.
+  function migrateV1(old) {
+    const cur = old.teams[old.current] || Object.values(old.teams)[0] || { roster: [], excluded: [] };
+    const byDate = {}, teams = [];
+    old.history.filter(h => h.team === old.current).forEach(h => {
+      if (!byDate[h.date]) { byDate[h.date] = { date: h.date, members: [] }; teams.push(byDate[h.date]); }
+      byDate[h.date].members.push(h.name);
+    });
+    return { roster: cur.roster || [], excluded: cur.excluded || [], teams };
   }
-  function validState(s) {
-    return s && typeof s === 'object' && s.teams && typeof s.teams === 'object' &&
-      Object.keys(s.teams).length > 0 && Array.isArray(s.history);
+  function normalise(s) {
+    s.excluded = Array.isArray(s.excluded) ? s.excluded : [];
+    s.teams = s.teams.map(t => ({ date: t.date || new Date().toISOString(), members: Array.isArray(t.members) ? t.members : [] }));
+    return s;
   }
   function load() {
     try {
       const s = JSON.parse(localStorage.getItem(KEY));
-      if (validState(s)) {
-        Object.values(s.teams).forEach(t => { t.roster = t.roster || []; t.excluded = t.excluded || []; });
-        if (!s.teams[s.current]) s.current = Object.keys(s.teams)[0];
-        return s;
-      }
+      if (isV2(s)) return normalise(s);
+      const o = JSON.parse(localStorage.getItem(OLD_KEY));
+      if (isV1(o)) return normalise(migrateV1(o));
     } catch (e) {}
     return freshState();
   }
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+  let storageOk = true;
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); storageOk = true; }
+    catch (e) { storageOk = false; }
+    $('saveWarn').style.display = storageOk ? 'none' : 'block';
+  }
 
-  let state = load();
+  let state;
   let pendingNames = [];
-  const team = () => state.teams[state.current];
-  const getPool = () => team().roster.filter(n => !team().excluded.includes(n));
+  let picking = null;           // roster name currently choosing a team to join
+  const getPool = () => state.roster.filter(n => !hasName(state.excluded, n));
   const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
   const hasName = (list, n) => list.some(x => sameName(x, n));
 
   /* ---------- Helpers ---------- */
-  const $ = id => document.getElementById(id);
+  function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) {
     const e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -432,8 +447,29 @@
     return e;
   }
   function fmtDate(iso) {
-    const d = new Date(iso);
-    return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  const sortNames = list => list.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+
+  /* ---------- Team/draw state changes ---------- */
+  function detachFromTeams(name) {
+    state.teams.forEach(t => { t.members = t.members.filter(m => !sameName(m, name)); });
+  }
+  // Draw a person: out of the pool, into team index i (or a new team when i === -1)
+  function markDrawn(name, i) {
+    if (!hasName(state.excluded, name)) state.excluded.push(name);
+    detachFromTeams(name);
+    if (i === -1 || !state.teams[i]) state.teams.push({ date: new Date().toISOString(), members: [name] });
+    else state.teams[i].members.push(name);
+    save(); refresh();
+  }
+  // Undraw a person: back in the pool and out of whichever team held them
+  function undraw(name) {
+    const touched = state.teams.filter(t => hasName(t.members, name));
+    state.excluded = state.excluded.filter(n => !sameName(n, name));
+    detachFromTeams(name);
+    state.teams = state.teams.filter(t => !(touched.includes(t) && t.members.length === 0));
+    save(); refresh();
   }
 
   /* ---------- Tabs ---------- */
@@ -441,54 +477,9 @@
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
     document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
     if (name === 'roster') renderRoster();
-    if (name === 'history') renderHistory();
+    if (name === 'history') renderTeams();
   }
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
-
-  /* ---------- Teams ---------- */
-  function renderTeams() {
-    const sel = $('teamSelect');
-    sel.innerHTML = '';
-    Object.keys(state.teams).forEach(name => {
-      const o = el('option', '', name);
-      o.value = name;
-      if (name === state.current) o.selected = true;
-      sel.appendChild(o);
-    });
-    $('headerTitle').textContent = state.current + ' — Name Selector';
-    $('revealEyebrow').textContent = state.current;
-  }
-  $('teamSelect').addEventListener('change', e => {
-    state.current = e.target.value; pendingNames = [];
-    save(); resetStage(); refresh();
-  });
-  $('teamNew').addEventListener('click', () => {
-    const name = (prompt('Name for the new team:') || '').trim();
-    if (!name) return;
-    if (Object.keys(state.teams).some(t => sameName(t, name))) { alert('A team with that name already exists.'); return; }
-    state.teams[name] = { roster: [], excluded: [] };
-    state.current = name;
-    save(); resetStage(); refresh(); showTab('roster');
-  });
-  $('teamRename').addEventListener('click', () => {
-    const old = state.current;
-    const name = (prompt('Rename team:', old) || '').trim();
-    if (!name || name === old) return;
-    if (Object.keys(state.teams).some(t => t !== old && sameName(t, name))) { alert('A team with that name already exists.'); return; }
-    const rebuilt = {};
-    Object.keys(state.teams).forEach(k => { rebuilt[k === old ? name : k] = state.teams[k]; });
-    state.teams = rebuilt;
-    state.history.forEach(h => { if (h.team === old) h.team = name; });
-    state.current = name;
-    save(); refresh();
-  });
-  $('teamDelete').addEventListener('click', () => {
-    if (Object.keys(state.teams).length < 2) { alert('You need at least one team.'); return; }
-    if (!confirm('Delete team "' + state.current + '" and its roster? Its draw history is kept.')) return;
-    delete state.teams[state.current];
-    state.current = Object.keys(state.teams)[0];
-    save(); resetStage(); refresh();
-  });
 
   /* ---------- Draw ---------- */
   const countInput = $('countInput'), stage = $('stage'), idleMsg = $('idleMsg'),
@@ -497,7 +488,7 @@
         revealBtn = $('revealBtn'), drumrollName = $('drumrollName'),
         drumrollBar = $('drumrollBar'), drumrollFill = $('drumrollFill'),
         spotlight = $('spotlight'), canvas = $('confettiCanvas'),
-        ctx = canvas.getContext('2d');
+        teamLabel = $('teamLabel'), ctx = canvas.getContext('2d');
 
   $('drawBtn').addEventListener('click', startDraw);
   revealBtn.addEventListener('click', beginReveal);
@@ -505,7 +496,7 @@
   function startDraw() {
     const pool = getPool();
     const want = parseInt(countInput.value) || 1;
-    if (pool.length === 0) { alert('Nobody left in the pool. Add people on the Roster tab or return drawn names to the pool.'); return; }
+    if (pool.length === 0) { alert('Nobody left in the pool. Add people on the Roster tab or undraw someone.'); return; }
     const count = Math.min(want, pool.length);
     const shuffled = [...pool];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -513,6 +504,8 @@
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     pendingNames = shuffled.slice(0, count);
+    const teamNo = state.teams.length + 1;
+    $('revealEyebrow').textContent = 'Team ' + teamNo;
     revealHeadline.textContent = count === 1 ? 'One name is about to be drawn...' : `${count} names are about to be drawn...`;
     revealSub.textContent = "When you're ready, hit the button";
     revealBtn.textContent = count === 1 ? '🎲 Reveal the name!' : `🎲 Reveal all ${count} names!`;
@@ -521,6 +514,7 @@
     drumrollBar.style.display = 'none';
     revealOverlay.classList.remove('hidden');
     idleMsg.style.display = 'none';
+    teamLabel.style.display = 'none';
     namesGrid.style.display = 'none';
     namesGrid.innerHTML = '';
     spotlight.classList.add('on');
@@ -556,14 +550,17 @@
   function showCards() {
     namesGrid.style.display = 'flex';
     spotlight.classList.remove('on');
-    const now = new Date().toISOString();
+    state.teams.push({ date: new Date().toISOString(), members: [] });
+    const team = state.teams[state.teams.length - 1];
     pendingNames.forEach((name, i) => {
-      if (!hasName(team().excluded, name)) team().excluded.push(name);
-      state.history.push({ id: Date.now() + '-' + i, team: state.current, name, date: now });
+      if (!hasName(state.excluded, name)) state.excluded.push(name);
+      team.members.push(name);
       const card = el('div', 'name-card' + (i % 3 === 1 ? ' accent' : ''), name);
       namesGrid.appendChild(card);
       setTimeout(() => card.classList.add('pop'), i * 180);
     });
+    teamLabel.textContent = 'Team ' + state.teams.length;
+    teamLabel.style.display = 'block';
     setTimeout(launchConfetti, 100);
     pendingNames = [];
     save();
@@ -600,35 +597,30 @@
 
   function resetStage() {
     namesGrid.innerHTML = ''; namesGrid.style.display = 'none';
+    teamLabel.style.display = 'none';
     revealOverlay.classList.add('hidden');
     idleMsg.style.display = '';
     spotlight.classList.remove('on');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  function addBack(name) {
-    const t = team();
-    t.excluded = t.excluded.filter(n => !sameName(n, name));
-    save(); refresh();
-  }
   $('resetBtn').addEventListener('click', () => {
-    if (team().excluded.length === 0) return;
-    if (!confirm('Put all ' + team().excluded.length + ' drawn names back in the pool?')) return;
-    team().excluded = [];
+    if (state.excluded.length === 0) return;
+    if (!confirm('Put all ' + state.excluded.length + ' drawn names back in the pool? Team records are kept.')) return;
+    state.excluded = [];
     save(); resetStage(); refresh();
   });
 
   function renderDrawn() {
     const section = $('drawnSection'), pills = $('drawnPills');
-    const ex = team().excluded;
     pills.innerHTML = '';
-    if (ex.length === 0) { section.classList.remove('visible'); return; }
+    if (state.excluded.length === 0) { section.classList.remove('visible'); return; }
     section.classList.add('visible');
-    ex.forEach(n => {
+    state.excluded.forEach(n => {
       const pill = el('span', 'drawn-pill');
       pill.appendChild(el('span', '', n));
       const b = el('button', '', 'Add back');
-      b.addEventListener('click', () => addBack(n));
+      b.addEventListener('click', () => undraw(n));
       pill.appendChild(b);
       pills.appendChild(pill);
     });
@@ -636,12 +628,11 @@
 
   /* ---------- Roster ---------- */
   function addPeople(names) {
-    const t = team();
     let added = 0;
     names.map(n => n.trim()).filter(Boolean).forEach(n => {
-      if (!hasName(t.roster, n)) { t.roster.push(n); added++; }
+      if (!hasName(state.roster, n)) { state.roster.push(n); added++; }
     });
-    t.roster.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+    sortNames(state.roster);
     save(); refresh();
     return added;
   }
@@ -649,7 +640,7 @@
     const input = $('addName');
     const name = input.value.trim();
     if (!name) return;
-    if (hasName(team().roster, name)) { alert(name + ' is already on the roster.'); return; }
+    if (hasName(state.roster, name)) { alert(name + ' is already on the roster.'); return; }
     addPeople([name]);
     input.value = ''; input.focus();
   }
@@ -658,37 +649,45 @@
   $('bulkToggle').addEventListener('click', () => $('bulkBox').classList.toggle('open'));
   $('bulkCancel').addEventListener('click', () => { $('bulkText').value = ''; $('bulkBox').classList.remove('open'); });
   $('bulkAdd').addEventListener('click', () => {
-    const lines = $('bulkText').value.split('\n');
-    const added = addPeople(lines);
+    const added = addPeople($('bulkText').value.split('\n'));
     $('bulkText').value = ''; $('bulkBox').classList.remove('open');
     alert(added + ' name' + (added === 1 ? '' : 's') + ' added.');
   });
 
   function renameMember(oldName, newName) {
     newName = newName.trim();
-    const t = team();
     if (!newName || newName === oldName) return false;
-    if (t.roster.some(n => n !== oldName && sameName(n, newName))) { alert(newName + ' is already on the roster.'); return false; }
-    t.roster = t.roster.map(n => n === oldName ? newName : n);
-    t.excluded = t.excluded.map(n => n === oldName ? newName : n);
-    state.history.forEach(h => { if (h.team === state.current && h.name === oldName) h.name = newName; });
+    if (state.roster.some(n => n !== oldName && sameName(n, newName))) { alert(newName + ' is already on the roster.'); return false; }
+    const swap = n => n === oldName ? newName : n;
+    state.roster = sortNames(state.roster.map(swap));
+    state.excluded = state.excluded.map(swap);
+    state.teams.forEach(t => { t.members = t.members.map(swap); });
     save();
     return true;
   }
   function removeMember(name) {
-    if (!confirm('Remove ' + name + ' from ' + state.current + '? Their past draws stay in History.')) return;
-    const t = team();
-    t.roster = t.roster.filter(n => n !== name);
-    t.excluded = t.excluded.filter(n => n !== name);
+    if (!confirm('Remove ' + name + ' from the roster? Past teams keep their name.')) return;
+    state.roster = state.roster.filter(n => n !== name);
+    state.excluded = state.excluded.filter(n => n !== name);
     save(); refresh();
+  }
+
+  function teamOptions(select, withNew) {
+    if (withNew) {
+      const o = el('option', '', 'New team (Team ' + (state.teams.length + 1) + ')');
+      o.value = '-1'; select.appendChild(o);
+    }
+    state.teams.forEach((t, i) => {
+      const o = el('option', '', 'Team ' + (i + 1));
+      o.value = String(i); select.appendChild(o);
+    });
   }
 
   function renderRoster() {
     const list = $('rosterList');
     list.innerHTML = '';
-    const t = team();
-    if (t.roster.length === 0) { list.appendChild(el('div', 'empty', 'No one on this team yet. Add people above.')); return; }
-    t.roster.forEach(name => {
+    if (state.roster.length === 0) { list.appendChild(el('div', 'empty', 'Nobody on the roster yet. Add people above.')); return; }
+    state.roster.forEach(name => {
       const row = el('div', 'roster-row');
       const input = el('input');
       input.type = 'text'; input.value = name; input.setAttribute('aria-label', 'Edit name ' + name);
@@ -697,11 +696,27 @@
       input.addEventListener('keydown', e => { if (e.key === 'Enter') input.blur(); if (e.key === 'Escape') { input.value = name; input.blur(); } });
       row.appendChild(input);
 
-      const drawn = hasName(t.excluded, name);
-      row.appendChild(el('span', 'status ' + (drawn ? 'drawn' : 'avail'), drawn ? 'Drawn' : 'In pool'));
+      const drawn = hasName(state.excluded, name);
+      const teamIdx = state.teams.findIndex(t => hasName(t.members, name));
+      const label = drawn ? (teamIdx >= 0 ? 'Team ' + (teamIdx + 1) : 'Drawn') : 'In pool';
+      row.appendChild(el('span', 'status ' + (drawn ? 'drawn' : 'avail'), label));
+
       if (drawn) {
-        const b = el('button', 'icon-btn', 'Add back');
-        b.addEventListener('click', () => addBack(name));
+        const b = el('button', 'icon-btn', 'Undraw');
+        b.addEventListener('click', () => undraw(name));
+        row.appendChild(b);
+      } else if (picking === name) {
+        const sel = el('select', 'sel small');
+        teamOptions(sel, true);
+        row.appendChild(sel);
+        const ok = el('button', 'icon-btn primary', 'Add');
+        ok.addEventListener('click', () => { picking = null; markDrawn(name, parseInt(sel.value)); });
+        const cancel = el('button', 'icon-btn', 'Cancel');
+        cancel.addEventListener('click', () => { picking = null; renderRoster(); });
+        row.appendChild(ok); row.appendChild(cancel);
+      } else {
+        const b = el('button', 'icon-btn primary', 'Draw');
+        b.addEventListener('click', () => { picking = name; renderRoster(); });
         row.appendChild(b);
       }
       const del = el('button', 'icon-btn del', 'Remove');
@@ -711,64 +726,64 @@
     });
   }
 
-  /* ---------- History ---------- */
-  function renderHistoryFilter() {
-    const sel = $('historyFilter');
-    const keep = sel.value || '__all';
-    sel.innerHTML = '';
-    const all = el('option', '', 'All teams'); all.value = '__all'; sel.appendChild(all);
-    const names = new Set(Object.keys(state.teams));
-    state.history.forEach(h => names.add(h.team));
-    names.forEach(n => { const o = el('option', '', n); o.value = n; sel.appendChild(o); });
-    sel.value = [...sel.options].some(o => o.value === keep) ? keep : '__all';
-  }
-  function renderHistory() {
-    renderHistoryFilter();
-    const filter = $('historyFilter').value;
-    const rows = state.history.filter(h => filter === '__all' || h.team === filter);
+  /* ---------- Teams ---------- */
+  function renderTeams() {
     const box = $('historyList');
     box.innerHTML = '';
-    if (rows.length === 0) { box.appendChild(el('div', 'empty', 'No draws recorded yet.')); return; }
-    const byTeam = {};
-    rows.forEach(h => { (byTeam[h.team] = byTeam[h.team] || []).push(h); });
-    Object.keys(byTeam).forEach(tn => {
-      box.appendChild(el('div', 'hist-team', tn + ' (' + byTeam[tn].length + ')'));
-      const table = el('table');
-      const head = el('tr');
-      ['#', 'Name', 'Drawn on', ''].forEach(h => head.appendChild(el('th', '', h)));
-      table.appendChild(head);
-      byTeam[tn].slice().reverse().forEach((h, i, arr) => {
-        const tr = el('tr');
-        tr.appendChild(el('td', '', String(arr.length - i)));
-        tr.appendChild(el('td', '', h.name));
-        tr.appendChild(el('td', '', fmtDate(h.date)));
-        const td = el('td');
-        const tm = state.teams[h.team];
-        if (tm && hasName(tm.excluded, h.name)) {
-          const b = el('button', 'icon-btn', 'Add back');
-          b.addEventListener('click', () => {
-            tm.excluded = tm.excluded.filter(n => !sameName(n, h.name));
-            save(); refresh(); renderHistory();
-          });
-          td.appendChild(b);
-        } else if (tm && hasName(tm.roster, h.name)) {
-          td.appendChild(el('span', 'status avail', 'In pool'));
-        } else {
-          td.appendChild(el('span', 'status drawn', 'Left team'));
-        }
-        tr.appendChild(td);
-        table.appendChild(tr);
+    if (state.teams.length === 0) {
+      box.appendChild(el('div', 'empty', 'No teams drawn yet. Draw some names, or start a team by hand with + New team.'));
+      return;
+    }
+    state.teams.forEach((team, i) => {
+      const card = el('div', 'team-card');
+      const head = el('div', 'team-card-head');
+      head.appendChild(el('span', 'team-card-title', 'Team ' + (i + 1)));
+      head.appendChild(el('span', 'team-card-date', fmtDate(team.date) + ' · ' + team.members.length + ' member' + (team.members.length === 1 ? '' : 's')));
+      head.appendChild(el('span', 'spacer'));
+
+      const avail = getPool();
+      if (avail.length) {
+        const sel = el('select', 'sel small');
+        const first = el('option', '', 'Add person…'); first.value = ''; sel.appendChild(first);
+        avail.forEach(n => { const o = el('option', '', n); o.value = n; sel.appendChild(o); });
+        sel.addEventListener('change', () => { if (sel.value) markDrawn(sel.value, i); });
+        head.appendChild(sel);
+      }
+      const del = el('button', 'icon-btn del', 'Delete team');
+      del.addEventListener('click', () => {
+        if (!confirm('Delete Team ' + (i + 1) + '? Its members go back in the pool, and later teams are renumbered.')) return;
+        team.members.forEach(m => { state.excluded = state.excluded.filter(n => !sameName(n, m)); });
+        state.teams.splice(i, 1);
+        save(); refresh();
       });
-      box.appendChild(table);
+      head.appendChild(del);
+      card.appendChild(head);
+
+      const body = el('div', 'team-card-body');
+      if (team.members.length === 0) body.appendChild(el('span', 'team-empty', 'No one in this team yet.'));
+      team.members.forEach(m => {
+        const onRoster = hasName(state.roster, m);
+        const chip = el('span', 'chip' + (onRoster ? '' : ' left'));
+        chip.appendChild(el('span', '', m + (onRoster ? '' : ' (left)')));
+        const x = el('button', '', '×');
+        x.title = 'Undraw ' + m + ' and remove from this team';
+        x.addEventListener('click', () => undraw(m));
+        chip.appendChild(x);
+        body.appendChild(chip);
+      });
+      card.appendChild(body);
+      box.appendChild(card);
     });
   }
-  $('historyFilter').addEventListener('change', renderHistory);
+  $('newTeamBtn').addEventListener('click', () => {
+    state.teams.push({ date: new Date().toISOString(), members: [] });
+    save(); refresh(); renderTeams();
+  });
   $('historyClear').addEventListener('click', () => {
-    const filter = $('historyFilter').value;
-    const label = filter === '__all' ? 'ALL draw history' : 'the draw history for ' + filter;
-    if (!confirm('Permanently clear ' + label + '? This does not change who is in the pool.')) return;
-    state.history = state.history.filter(h => filter !== '__all' && h.team !== filter);
-    save(); refresh(); renderHistory();
+    if (state.teams.length === 0) return;
+    if (!confirm('Permanently clear all ' + state.teams.length + ' team records? This does not change who is in the pool.')) return;
+    state.teams = [];
+    save(); refresh(); renderTeams();
   });
 
   /* ---------- Backup ---------- */
@@ -787,12 +802,11 @@
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        const s = JSON.parse(reader.result);
-        if (!validState(s)) throw new Error('bad');
+        let s = JSON.parse(reader.result);
+        if (isV1(s)) s = migrateV1(s);
+        if (!isV2(s)) throw new Error('bad');
         if (!confirm('Replace everything in the app with this backup?')) return;
-        Object.values(s.teams).forEach(t => { t.roster = t.roster || []; t.excluded = t.excluded || []; });
-        if (!s.teams[s.current]) s.current = Object.keys(s.teams)[0];
-        state = s; save(); resetStage(); refresh();
+        state = normalise(s); save(); resetStage(); refresh();
       } catch (err) { alert('That file is not a valid backup.'); }
     };
     reader.readAsText(file);
@@ -801,19 +815,21 @@
 
   /* ---------- Refresh ---------- */
   function refresh() {
-    renderTeams();
-    const t = team();
-    const avail = getPool().length;
-    $('statAvail').textContent = avail;
-    $('statDrawn').textContent = t.excluded.length;
-    $('statTotal').textContent = t.roster.length;
-    $('rosterBadge').textContent = t.roster.length;
-    $('historyBadge').textContent = state.history.length;
+    $('statAvail').textContent = getPool().length;
+    $('statDrawn').textContent = state.excluded.length;
+    $('statTotal').textContent = state.roster.length;
+    $('statTeams').textContent = state.teams.length;
+    $('rosterBadge').textContent = state.roster.length;
+    $('historyBadge').textContent = state.teams.length;
     renderDrawn();
     if ($('panel-roster').classList.contains('active')) renderRoster();
-    if ($('panel-history').classList.contains('active')) renderHistory();
+    if ($('panel-history').classList.contains('active')) renderTeams();
   }
 
+  state = load();
+  const warn = el('div', 'storage-note', 'Warning: this browser is blocking saved data, so changes will be lost when you close the page. Use Export to keep a backup.');
+  warn.id = 'saveWarn'; warn.style.cssText = 'display:none;color:#CC2200;font-weight:600;padding-top:10px';
+  document.querySelector('.main').appendChild(warn);
   save();
   refresh();
 </script>
